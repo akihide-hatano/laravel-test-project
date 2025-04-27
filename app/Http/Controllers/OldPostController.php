@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function index(){
         // $posts=Post::all();
-        $posts=Post::paginate(10);
+        $posts = Post::where('user_id',auth()->id())->get();
         return view('post.index',compact('posts'));
     }
     
@@ -29,7 +29,7 @@ class PostController extends Controller
         $validated['user_id'] = auth()->id();
         $post = Post::create($validated);
         $request->session()->flash('message','保存しました');
-        return redirect()->route('post.index');
+        return back();
     }
 
     public function update(Request $request, Post $post){
